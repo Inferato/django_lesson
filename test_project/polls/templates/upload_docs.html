@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>
+            Upload User Document
+        </title>
+    </head>
+    <body>
+        <h1>Choose file</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Upload file</button>
+        </form>
+    </body>
+</html>

@@ -1,0 +1,18 @@
+
+    {% for post in posts %}
+    <div>
+    <li>{{ post.id }}</li>
+    <li>{{ post.title }}</li>
+    <li>{{ post.content }}</li>
+    {% if post.comments %}
+        <div>
+        {% for comment in post.comments.all %}
+        <span>
+            {{ comment.content }}
+        </span><br>
+        {% endfor %}
+        </div>
+    {% endif %}
+    </div>
+    <br>
+    {% endfor %}

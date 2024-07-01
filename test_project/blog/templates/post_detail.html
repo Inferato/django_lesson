@@ -1,0 +1,12 @@
+<head>
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    {% if post.comments %}
+    <ul>
+        {% for comment in post.comments %}
+            <li>{{ comment.content }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</body>

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load poll_tags %}
+
+{% block content %}
+<body>
+    <h1>Assign view results permission to selected users</h1>
+    <form method="post">
+        {% csrf_token %}
+        <ul>
+            {% for user in users %}
+                <li>
+                    <label>
+                        {% has_permission user "polls.can_view_results" as has_perm %}
+                        <input type="checkbox" name="users" value="{{ user.id }}" {% if has_perm %} checked {% endif %}>{{ user.username }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ul>
+        <button type="submit">Submit</button>
+        {% show_enrollemts %}
+
+        {{ value | transform_value }}
+    </form>
+</body>
+{% endblock %}

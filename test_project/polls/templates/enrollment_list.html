@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<ul>
+    {% for enrollment in enrollments %}
+        <li>{{ enrollment }}</li>
+    {% empty %}
+        <li> No course enrollments!</li>
+    {% endfor %}
+</ul>
+{% endblock %}

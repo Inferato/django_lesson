@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +26,7 @@ SECRET_KEY = 'django-insecure-z295*m4dpm80ag&!x@gdii*i_*3fas(#2kho!&^ayc#n1rru6h
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,8 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'polls',
     'second_app',
+    'logistration',
+    'blogpost',
+    'drf_yasg',
+    'celery',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +64,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR,
+            BASE_DIR, BASE_DIR / 'test_project/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -80,10 +87,10 @@ WSGI_APPLICATION = 'test_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'django_db',
+        'NAME': 'django_db1',
         'USER': 'demo_user',
-        'PASSWORD': '',
-        'HOST': 'localhost',
+        'PASSWORD': 'password',
+        'HOST': 'psql_db',
         'PORT': ''
     }
 }
@@ -129,3 +136,28 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'logistration.CustomUser'
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+LOGIN_URL = '/login/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+from .celery import app
+
+from celery.schedules import crontab
+# from polls.tasks import get_latest_question 
+
+app.conf.beat_schedule = {
+    'log-latest-question-every-2-minutes': {
+        'task': 'polls.tasks.get_latest_question',
+        'schedule': crontab(minute='*/2'),
+    }
+}
+
+HTTP_SCHEMA = 'http://'
+BLOG_URL = '192.168.0.101:9000'
+BLOG_BASE_URL = f'{HTTP_SCHEMA}{BLOG_URL}'

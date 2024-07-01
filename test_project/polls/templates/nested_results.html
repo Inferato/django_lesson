@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+    It is {% now "jS F Y H:i" %}
+    <div>
+        {% block "results" %}{% endblock %}
+    </div>
+    <div>
+        Here is a top of page
+    </div>
+    <div>
+        Here is a mid of page
+    </div>
+    <div>
+        {% block "index" %}{% endblock %}
+    </div>
+    <div>
+        Here i the bottom of page &lt
+    </div>
+</body>
+{% endblock %}
