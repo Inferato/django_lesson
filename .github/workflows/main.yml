@@ -1,0 +1,35 @@
+name: CI/CD for django_lesson project
+
+on:
+    push:
+        branches:
+            - main
+    pull_request:
+        branches:
+            - main
+
+env:
+    VENV_DIR: .venv
+    PIP_CAHCE_DIR: ${{github.workspace}}/.cache/pip
+
+jobs:
+    lint:
+        name: Lint
+        runs-on: ubuntu-latets
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Set up Python 3.12
+              uses: actions/setup-python@v2
+              with:
+                python-version: '3.12'
+            - name: Install Dependencies
+              run: |
+                python -m venv $VENV_DIR
+                source $VENV_DIR/bin/activate
+                python -m pip install --upgrade pip
+                pip install -r requirements.txt
+            - name: Lint with flake8
+              run: |
+                pip install flake8
+                flake8 .
