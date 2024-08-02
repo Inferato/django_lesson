@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.views import View
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import gettext_lazy as _
 from .forms import RegistrationForm
 from django.contrib import messages
 
@@ -16,7 +17,8 @@ class LoginView(View):
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
-        return render(request, self.template_name, {'form': form})
+        page_title = _('Login Form')
+        return render(request, self.template_name, {'form': form, 'page_title': page_title})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request, data=request.POST)

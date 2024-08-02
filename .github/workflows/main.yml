@@ -15,7 +15,7 @@ env:
 jobs:
     lint:
         name: Lint
-        runs-on: ubuntu-latets
+        runs-on: ubuntu-latest
         steps:
             - name: Checkout code
               uses: actions/checkout@v2
@@ -25,10 +25,7 @@ jobs:
                 python-version: '3.12'
             - name: Install Dependencies
               run: |
-                python -m venv $VENV_DIR
-                source $VENV_DIR/bin/activate
                 python -m pip install --upgrade pip
-                pip install -r requirements.txt
             - name: Lint with flake8
               run: |
                 pip install flake8

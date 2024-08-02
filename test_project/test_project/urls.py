@@ -19,6 +19,7 @@ from django.urls import include, path
 from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -37,7 +38,7 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-urlpatterns = [
+urlpatterns = i18n_patterns(
     path('admin/', admin.site.urls),
     path('', include('polls.urls')),
     path('', include('logistration.urls')),
@@ -46,6 +47,6 @@ urlpatterns = [
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='redoc'),
     path('post-list/', PostsList.as_view(), name='post_list'),
     path('blog/', include('blog.urls'))
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += [path('i18n/', include('django.conf.urls.i18n'))]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
