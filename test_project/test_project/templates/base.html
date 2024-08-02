@@ -1,19 +1,35 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html>
 <body>
     <header>
         <div class="header-content">
-            <h1>Django lessons</h1>
+            <form action="{% url 'set_language' %}" method="post">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ redirect_to }}">
+                <select name="language">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %}selected{% endif %}>
+                            {{ language.name_local }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="{% trans 'Change language' %}">
+            </form>
+            <h1>{% trans "Django lessons" %}</h1>
 
             {% if user.is_authenticated %}
                 <p>Welcome, {{ user.username }}!</p>
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
-                    <button type="submit">Logout</button>
+                    <button type="submit">{% trans "Logout" %}</button>
                 </form>
             {% else %}
-                <a href="{% url 'login' %}">Login</a>
-                <a href="{% url 'register' %}">Register</a>
+                <a href="{% url 'login' %}">{% trans "Login" %}</a>
+                <a href="{% url 'register' %}">{% trans "Register" %}</a>
             {% endif %}
         </div>
         {% if messages %}
